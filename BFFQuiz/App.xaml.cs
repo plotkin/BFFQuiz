@@ -22,12 +22,14 @@ namespace BFFQuiz
         /// </summary>
         /// <returns>Корневой кадр приложения телефона.</returns>
         public PhoneApplicationFrame RootFrame { get; private set; }
-
+        static public string AccessToken;
         /// <summary>
         /// Конструктор объекта приложения.
         /// </summary>
+        //
         public App()
         {
+            
             // Global handler for uncaught exceptions. 
             UnhandledException += Application_UnhandledException;
 

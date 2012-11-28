@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
+using System.IO.IsolatedStorage;
 
 namespace BFFQuiz
 {
@@ -19,6 +20,22 @@ namespace BFFQuiz
         public MainPage()
         {
             InitializeComponent();
+            Loaded += MainPage_Loaded;
+            
+            
+        }
+
+        void MainPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (IsolatedStorageSettings.ApplicationSettings.Contains("token"))
+            {
+                NavigationService.Navigate(new Uri("/Facebook.xaml", UriKind.Relative));
+            }
+        }
+
+        private void Image_Tap_1(object sender, GestureEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Facebook.xaml", UriKind.Relative));
         }
     }
 }
