@@ -16,7 +16,7 @@ namespace BFFQuiz
     public partial class Facebook : PhoneApplicationPage
     {
         private const string AppID = "229759160484670";
-        private const string ExtendedPermissions = "user_about_me,publish_stream,publish_actions,offline_access";
+        private const string ExtendedPermissions = "friends_likes, friends_photos, friends_hometown, publish_actions, offline_access";
         private readonly FacebookClient fb = new FacebookClient();
         public Facebook()
         {
@@ -30,7 +30,7 @@ namespace BFFQuiz
                 return;
             }
 
-            if (res.IsSuccess)
+            if (res.IsSuccess) 
             {
                 App.AccessToken = res.AccessToken;
                 IsolatedStorageSettings.ApplicationSettings["token"] = res.AccessToken;
