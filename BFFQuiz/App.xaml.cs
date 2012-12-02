@@ -23,6 +23,7 @@ namespace BFFQuiz
         /// <returns>Корневой кадр приложения телефона.</returns>
         public PhoneApplicationFrame RootFrame { get; private set; }
         static public string AccessToken;
+        static public string Check;
         /// <summary>
         /// Конструктор объекта приложения.
         /// </summary>

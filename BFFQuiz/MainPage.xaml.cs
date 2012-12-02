@@ -29,11 +29,12 @@ namespace BFFQuiz
         {
             if (IsolatedStorageSettings.ApplicationSettings.Contains("token"))
             {
-                NavigationService.Navigate(new Uri("/Facebook.xaml", UriKind.Relative));
+                App.AccessToken = (string)IsolatedStorageSettings.ApplicationSettings["token"];
+                NavigationService.Navigate(new Uri("/Quiz.xaml", UriKind.Relative));
             }
         }
 
-        private void Image_Tap_1(object sender, GestureEventArgs e)
+        private void Image_Tap_1(object sender,System.Windows.Input.GestureEventArgs e)
         {
             NavigationService.Navigate(new Uri("/Facebook.xaml", UriKind.Relative));
         }
