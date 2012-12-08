@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace BFFQuiz.helper
 {
@@ -93,5 +95,57 @@ namespace BFFQuiz.helper
             public string text { get; set; }
             public string type { get; set; }
             public string id { get; set; }
+        }
+        public class Board
+        {
+            public int bad { get; set; }
+            public int good { get; set; }
+            public double ratio { get; set; }
+            public string id { get; set; }
+            public string name { get; set; }
+        }
+
+        public class Bottom
+        {
+            public int bad { get; set; }
+            public int good { get; set; }
+            public double ratio { get; set; }
+            public string id { get; set; }
+            public string name { get; set; }
+        }
+
+        public class LeaderboardObject
+        {
+            public List<Board> board { get; set; }
+            public List<Bottom> bottom { get; set; }
+        }
+        public class LeaderboardAll
+        {
+            public int bad { get; set; }
+            public int good { get; set; }
+            public double ratio { get; set; }
+            public string id { get; set; }
+            public string name { get; set; }
+            public ImageBrush idBrush { get; set; }
+            public BitmapImage position { get;set; }
+            public LeaderboardAll(int bad, int good, double ratio, string id, string name, string pos)
+            {
+                this.bad = bad;
+                this.good = good;
+                this.ratio = Math.Round(ratio, 2) * 100 * 3;
+                this.id = id;
+                ImageBrush ib = new ImageBrush();
+                ib.ImageSource = new BitmapImage(new Uri("http://graph.facebook.com/" + id + "/picture?width=100&height=100", UriKind.Absolute));
+                this.idBrush = ib;
+                this.name = name.Split(' ')[0] + " " + name.Split(' ')[name.Split().Length - 1][0] + ".";
+                if (pos == "t")
+                {
+                    position = new BitmapImage(new Uri("images/photo_chose.png", UriKind.Relative));
+                }
+                else
+                {
+                    position = new BitmapImage(new Uri("images/photo_nochose.png", UriKind.Relative));
+                }
+            }
         }
 }

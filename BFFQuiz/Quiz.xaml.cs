@@ -27,6 +27,8 @@ namespace BFFQuiz
         private string flag;
         private string answer;
         private string userAns;
+        private LeaderboardObject leaderboard;
+        private List<LeaderboardAll> ldrbrd = new List<LeaderboardAll>();
         private Dictionary<string, object> postAnswer = new Dictionary<string, object>();
         public Quiz()
         {
@@ -125,7 +127,7 @@ namespace BFFQuiz
                 NameTwo.Text = photo.users[1].name.Split(' ')[0] + " " + photo.users[1].name.Split(' ')[i(photo.type, 1)][0] + ".";
                 NameThree.Text = photo.users[2].name.Split(' ')[0] + " " + photo.users[2].name.Split(' ')[i(photo.type, 2)][0] + ".";
                 ImageBrush ib = new ImageBrush();
-                ib.ImageSource = new BitmapImage(new Uri(photo.photo.src_big));
+                ib.ImageSource = new BitmapImage(new Uri(photo.photo.src_big, UriKind.Absolute));
                 QuizPhoto.Fill = ib;
                 TextQuestion.Text = photo.text;
                 ImageBrush ib1 = new ImageBrush();
@@ -333,8 +335,10 @@ namespace BFFQuiz
 
         void pc_DownloadStringCompleted(object sender, WindowsPhonePostClient.DownloadStringCompletedEventArgs e)
         {
-            MessageBox.Show(e.Result);
+            
+
         }
+
 
         private void VarOne_Tap_1(object sender, System.Windows.Input.GestureEventArgs e)
         {
@@ -365,8 +369,11 @@ namespace BFFQuiz
 
         private void Pivot_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
         {
-            
-            getLeaderboard();
+            Panorama p = (Panorama)sender;
+            if (p.SelectedIndex == 1)
+            {
+                getLeaderboard();            
+            }
         }
 
         private void getLeaderboard()
@@ -379,8 +386,19 @@ namespace BFFQuiz
 
         void _wc_DownloadStringCompleted(object sender, System.Net.DownloadStringCompletedEventArgs e)
         {
-            if(e.Error==null)
-            MessageBox.Show(e.Result); 
+            if (e.Error == null)
+            {
+                leaderboard = JsonConvert.DeserializeObject<LeaderboardObject>(e.Result);
+                foreach (var obj in leaderboard.board)
+                {
+                    ldrbrd.Add(new LeaderboardAll(obj.bad, obj.good, obj.ratio, obj.id, obj.name, "t"));
+                }
+                foreach (var obj in leaderboard.bottom)
+                {
+                    ldrbrd.Add(new LeaderboardAll(obj.bad, obj.good, obj.ratio, obj.id, obj.name, "b"));
+                }
+                lls.ItemsSource = ldrbrd;
+            }
         }
 
         private void ToggleSwitch_Checked_1(object sender, RoutedEventArgs e)
@@ -396,6 +414,30 @@ namespace BFFQuiz
             IsolatedStorageSettings.ApplicationSettings.Save();
             App.Check = "no";
         }
+
+
+        private void sli_ValueChanged_1(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (e.OldValue != 0.0)
+            {
+                Slider s = (Slider)sender;
+                foreach (var el in ldrbrd)
+                {
+                    if (el.name == s.Tag)
+                    {
+                        s.Value = el.ratio;
+                        return;
+                    }
+                }
+                
+            }
+        }
+
+
+
+
+
+
 
 
 
